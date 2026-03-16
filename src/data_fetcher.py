@@ -4,7 +4,7 @@ from datetime import datetime
 
 output_path = "data/stock_data.csv"
 
-tickers = ['AAPL', 'JNJ', 'JPM', 'XOM', 'AMZN']
+tickers = ["AAPL", "JNJ", "JPM", "XOM", "AMZN"]
 start_date = "2016-03-16"
 end_date = datetime.today().strftime('%Y-%m-%d')
 
