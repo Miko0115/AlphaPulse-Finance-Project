@@ -3,7 +3,7 @@ import yfinance as yf
 from datetime import datetime
 
 tickers = ['AAPL', 'JNJ', 'JPM', 'XOM', 'AMZN']
-start_date = "2021-03-16"
+start_date = "2016-03-16"
 end_date = datetime.today().strftime('%Y-%m-%d')
 
 raw_data = yf.download(
