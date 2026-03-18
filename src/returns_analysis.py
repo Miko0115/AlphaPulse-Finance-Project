@@ -44,3 +44,21 @@ reconstructed = L @ L.T
 print(f"\nVerification of Annual covariance matrix")
 print(f"Max difference: {np.max(np.abs(reconstructed - annual_cov_matrix.values)):.2e}")
 
+rolling_vol = log_returns.rolling(window=30).std()
+rolling_vol_annualized = rolling_vol * np.sqrt(252)
+
+rolling_vol_annualized = rolling_vol_annualized.dropna()
+print(rolling_vol_annualized.head())
+
+covid_period_vol = rolling_vol_annualized.loc['2020-03':'2020-04']
+
+calm_period_vol = rolling_vol_annualized.loc['2019-06':'2019-08'] 
+
+print(f"\nRolling volatility shape: {rolling_vol_annualized.shape}")
+print(f"Latest 30-day annualized volatility:")
+print(rolling_vol_annualized.iloc[-1].round(4))
+print(f"\nCovid peak volatility (March 2020):")
+print(covid_period_vol.max().round(4))
+print(f"\nCalm period volatility (2019):")
+print(calm_period_vol.mean().round(4))
+
