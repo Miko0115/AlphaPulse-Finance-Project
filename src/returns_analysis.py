@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-df = pd.read_csv("data/stock_data.csv",header=[0, 1], index_col=0, parse_dates=True)
+df = pd.read_csv("data/stock_data.csv", header=[0, 1], index_col=0, parse_dates=True)
 print(df.head())
 
 tickers = ["AAPL", "JNJ", "JPM", "XOM", "AMZN"]
@@ -43,3 +43,4 @@ print(pd.DataFrame(L, columns=tickers, index=tickers).round(4))
 reconstructed = L @ L.T
 print(f"\nVerification of Annual covariance matrix")
 print(f"Max difference: {np.max(np.abs(reconstructed - annual_cov_matrix.values)):.2e}")
+
