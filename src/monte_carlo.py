@@ -3,7 +3,7 @@ import pandas as pd
 
 df = pd.read_csv("data/stock_data.csv", header=[0, 1], index_col=0, parse_dates=True)
 
-tickers = ["AAPL", "JNJ", "JPM", "XOM", "AMZN"]
+tickers = ["AAPL", "UNH", "JPM", "XOM", "AMZN"]
 
 close_prices = df.loc[:, (tickers, "Close")]
 close_prices.columns = tickers
@@ -62,3 +62,18 @@ print(f"\nFor a ${portfolio_value_dollars:,} portfolio:")
 print(f"VaR 95%: ${abs(portfolio_value_dollars * var_95/100):.2f} max expected loss")
 print(f"VaR 99%: ${abs(portfolio_value_dollars * var_99/100):.2f} max expected loss")
 
+cvar_95 = portfolio_percentage_returns[portfolio_percentage_returns <= var_95].mean()
+cvar_99 = portfolio_percentage_returns[portfolio_percentage_returns <= var_99].mean()
+
+print(f"\nConditional Value at Risk (CVaR / Expected Shortfall)")
+print(f"CVaR 95%: {cvar_95:.2f}%")
+print(f"CVar 99%: {cvar_99:.2f}%")
+
+print(f"Comparison - VaR vs CVaR:")
+print(f"VaR 95%: {var_95:.2f}% - CVaR 95%: {cvar_95:.2f}%")
+print(f"VaR 99%: {var_99:.2f}% - CVaR 99%: {cvar_99:.2f}%")
+
+# Dollars terms:
+print("\nFor a $100000 portfolio:")
+print(f"CVaR 95%: ${abs(portfolio_value_dollars * cvar_95/100):.2f} avg loss in worst scenarios")
+print(f"CVaR 99%: ${abs(portfolio_value_dollars * cvar_99/100):.2f} avg loss in worst scenarios")

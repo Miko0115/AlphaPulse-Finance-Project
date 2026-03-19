@@ -4,9 +4,9 @@ from datetime import datetime
 
 output_path = "data/stock_data.csv"
 
-tickers = ["AAPL", "JNJ", "JPM", "XOM", "AMZN"]
-start_date = "2016-03-16"
-end_date = datetime.today().strftime('%Y-%m-%d')
+tickers = ["AAPL", "UNH", "JPM", "XOM", "AMZN"]
+start_date = "2015-01-01"
+end_date = "2025-01-01"
 
 raw_data = yf.download(
     tickers,
@@ -22,15 +22,8 @@ print(raw_data.head())
 print("Missing values in raw_data:")
 print(raw_data.isnull().sum())
 
-cleaned_raw_data = raw_data.ffill()
-cleaned_raw_data = cleaned_raw_data.bfill()
-
-print("Missing values in cleaned_raw_data:")
-print(raw_data.isnull().sum())
-
-
 for ticker in tickers:
-    close_prices = cleaned_raw_data[ticker]["Close"]
+    close_prices = raw_data[ticker]["Close"]
     daily_returns = close_prices.pct_change()
     
     anomalies = daily_returns[daily_returns.abs() > 0.5]
@@ -45,9 +38,9 @@ for ticker in tickers:
     print(f"Total Trading Days: {len(close_prices)}")
     print()
 
-cleaned_raw_data.to_csv(output_path, index=True)
+raw_data.to_csv(output_path, index=True)
 
 print(f"Cleaned data saved to {output_path}")
-print(f"Rows: {cleaned_raw_data.shape[0]}, Columns: {cleaned_raw_data.shape[1]}")
+print(f"Rows: {raw_data.shape[0]}, Columns: {raw_data.shape[1]}")
 
 

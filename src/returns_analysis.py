@@ -3,8 +3,9 @@ import pandas as pd
 
 df = pd.read_csv("data/stock_data.csv", header=[0, 1], index_col=0, parse_dates=True)
 print(df.head())
+print(df.shape)
 
-tickers = ["AAPL", "JNJ", "JPM", "XOM", "AMZN"]
+tickers = ["AAPL", "UNH", "JPM", "XOM", "AMZN"]
 
 close_prices = df.loc[:, (tickers, "Close")]
 close_prices.columns = tickers
@@ -62,3 +63,25 @@ print(covid_period_vol.max().round(4))
 print(f"\nCalm period volatility (2019):")
 print(calm_period_vol.mean().round(4))
 
+risk_free_rate = 0.0425
+weights = np.array([1/len(tickers)] * len(tickers))
+
+portfolio_annual_return = np.sum(log_returns.mean() * weights) * 252
+portfolio_annual_vol = np.sqrt(weights @ annual_cov_matrix.values @ weights)
+
+sharpe_ratio = (portfolio_annual_return - risk_free_rate) / portfolio_annual_vol
+
+print(f"\nSharpe Ratio Analysis:")
+print(f"Portfolio annual return: {portfolio_annual_return:.4f} ({portfolio_annual_return*100:.2f}%)")
+print(f"Portfolio annual volatility: {portfolio_annual_vol:.4f} ({portfolio_annual_vol*100:.2f}%)")
+print(f"Risk free rate: {risk_free_rate:.4f} ({risk_free_rate*100:.2f}%)")
+print(f"Sharpe Ratio: {sharpe_ratio:.4f}")
+
+# Individual stock Sharpe Ratios for comparison
+print(f"\nIndividual stock Sharpe Ratios:")
+for ticker in tickers:
+    stock_return = log_returns[ticker].mean() * 252
+    stock_vol = log_returns[ticker].std() * np.sqrt(252)
+    stock_sharpe = (stock_return - risk_free_rate) / stock_vol
+    print(f"{ticker}: {stock_sharpe:.4f} (return: {stock_return*100:.1f}%. vol: {stock_vol*100:.1f}%)")
+    
