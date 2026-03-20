@@ -86,3 +86,85 @@ if len(crisis_dates) > 0:
             
 
 #regime monte carlo:
+num_simulations = 10000
+num_days = 252
+num_assets = len(tickers)
+mc_weights = np.array([1/num_assets] * num_assets)
+
+regime_cov_matrices = {}
+regime_mean_returns = {}
+
+for label in ['Calm', 'Crisis', 'Stress']:
+    regime_dates = features[features["regime_label"] == label].index
+    regime_returns = log_returns.loc[regime_dates]
+    regime_cov_matrices[label] = regime_returns.cov().values
+    regime_mean_returns[label] = regime_returns.mean().values
+    
+print("\nRegime specific Covariance matrices:")
+for label in ['Calm', 'Crisis', 'Stress']:
+    annual_cov = regime_cov_matrices[label] * 252
+    print(f"\n{label} regime (annualized)")
+    print(pd.DataFrame(annual_cov, index=tickers, columns=tickers).round(4))
+    
+last_features = features_scaled[-1].reshape(1, -1)
+current_regime_num = kmeans.predict(last_features)[0]
+current_regime = regime_map[current_regime_num]
+
+print(f"\nCurrent market regime (last trading day): {current_regime}")
+
+current_cov = regime_cov_matrices[current_regime]
+current_mean = regime_mean_returns[current_regime]
+L_regime = np.linalg.cholesky(current_cov)
+
+portfolio_returns_regime = np.zeros(num_simulations)
+
+np.random.seed(42)
+
+for sim in range(num_simulations):
+    portfolio_value = 1.0
+    for day in range(num_days):
+        Z = np.random.standard_normal(num_assets)
+        correlated_returns = current_mean + L_regime @ Z
+        daily_returns = np.dot(mc_weights, correlated_returns)
+        portfolio_value *= np.exp(daily_returns)
+    
+    portfolio_returns_regime[sim] = portfolio_value
+    
+pct_returns_regime = (portfolio_returns_regime -1) * 100
+
+var_95_regime = np.percentile(pct_returns_regime, 5)
+var_99_regime = np.percentile(pct_returns_regime, 1)
+cvar_95_regime = pct_returns_regime[pct_returns_regime <= var_95_regime].mean()
+cvar_99_regime = pct_returns_regime[pct_returns_regime <= var_99_regime].mean()
+
+print(f"\nRegime-Aware Monte Carlo ({num_simulations:,} simulations)")
+print(f"Current regime: {current_regime}")
+print(f"Mean return: {np.mean(pct_returns_regime):.2f}%")
+print(f"Median return: {np.median(pct_returns_regime):.2f}%")
+print(f"Std dev: {np.std(pct_returns_regime):.2f}%")
+print(f"Best case: {np.max(pct_returns_regime):.2f}%")
+print(f"Worst case: {np.min(pct_returns_regime):.2f}%")
+print(f"\nRisk Metrics:")
+print(f"VaR 95%: {var_95_regime:.2f}%")
+print(f"VaR 99%: {var_99_regime:.2f}%")
+print(f"CVaR 95%: {cvar_95_regime:.2f}%")
+print(f"CVaR 99%: {cvar_99_regime:.2f}%")
+
+# --- Comparison across all three MC methods ---
+print(f"Comparison: Basic MC vs GARCH MC vs Regime MC ({current_regime})")
+print(f"{'Metric':<20} {'Basic MC':>12} {'GARCH MC':>12} {'Regime MC':>12}")
+print(f"{'Mean return':<20} {'+21.84%':>12} {'+21.72%':>12} {np.mean(pct_returns_regime):>+12.2f}%")
+print(f"{'VaR 95%':<20} {'-14.20%':>12} {'-12.97%':>12} {var_95_regime:>+12.2f}%")
+print(f"{'VaR 99%':<20} {'-24.27%':>12} {'-23.18%':>12} {var_99_regime:>+12.2f}%")
+print(f"{'CVaR 95%':<20} {'-20.42%':>12} {'-19.15%':>12} {cvar_95_regime:>+12.2f}%")
+print(f"{'CVaR 99%':<20} {'-28.67%':>12} {'-27.71%':>12} {cvar_99_regime:>+12.2f}%")
+print(f"{'Worst case':<20} {'-41.01%':>12} {'-41.88%':>12} {np.min(pct_returns_regime):>+12.2f}%")
+
+features[['regime_label']].to_csv("data/regime_labels.csv")
+
+pd.DataFrame({
+    'Final Value': portfolio_returns_regime,
+    'Pct Return': pct_returns_regime
+}).to_csv("data/regime_mc_results.csv", index=False)
+
+print("Exported: regime_labels, regime_mc_results")

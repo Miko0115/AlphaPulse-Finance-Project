@@ -47,3 +47,6 @@ for ticker in tickers:
 print(f"\nGARCH forecasted next-day volatility (annualized):")
 for ticker in tickers:
     print(f"{ticker}: {garch_forecasts[ticker] * np.sqrt(252):.4f}")
+    
+conditional_vol_df.to_csv("data/garch_conditional_vol.csv")
+print("Exported: garch_conditional_vol")

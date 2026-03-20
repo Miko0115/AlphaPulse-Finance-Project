@@ -85,3 +85,16 @@ for ticker in tickers:
     stock_sharpe = (stock_return - risk_free_rate) / stock_vol
     print(f"{ticker}: {stock_sharpe:.4f} (return: {stock_return*100:.1f}%. vol: {stock_vol*100:.1f}%)")
     
+log_returns.to_csv("data/log_returns.csv")
+correlation_matrix.to_csv("data/correlation_matrix.csv")
+rolling_vol_annualized.to_csv("data/rolling_volatility_annualized.csv")
+
+summary_stats = pd.DataFrame({
+    'Annual Return': log_returns.mean() * 252,
+    'Annual volatility': log_returns.std() * np.sqrt(252),
+    'Sharpe Ratio': (log_returns.mean() * 252 - risk_free_rate) / (log_returns.std() * np.sqrt(252))
+}, index=tickers)
+summary_stats.loc["Portfolio"] = [portfolio_annual_return, portfolio_annual_vol, sharpe_ratio]
+summary_stats.to_csv("data/summary_stats.csv")
+
+print("Exported: log_returns, correlation_matrix, rolling_volatility, summary_stats")

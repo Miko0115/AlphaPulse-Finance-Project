@@ -93,3 +93,10 @@ print(f"{'VaR 99%':<20} {'-24.27%':>12} {var_99_garch:>+12.2f}%")
 print(f"{'CVaR 95%':<20} {'-20.42%':>12} {cvar_95_garch:>+12.2f}%")
 print(f"{'CVaR 99%':<20} {'-28.67%':>12} {cvar_99_garch:>+12.2f}%")
 print(f"{'Worst case':<20} {'-41.01%':>12} {np.min(pct_returns_garch):>+12.2f}%")
+
+pd.DataFrame({
+    'Final Value': portfolio_return_garch,
+    'Pct Return': pct_returns_garch
+}).to_csv("data/garch_mc_results.csv", index=False)
+
+print("Exported: garch_mc_results")

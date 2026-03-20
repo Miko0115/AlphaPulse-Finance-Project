@@ -77,3 +77,18 @@ print(f"VaR 99%: {var_99:.2f}% - CVaR 99%: {cvar_99:.2f}%")
 print("\nFor a $100000 portfolio:")
 print(f"CVaR 95%: ${abs(portfolio_value_dollars * cvar_95/100):.2f} avg loss in worst scenarios")
 print(f"CVaR 99%: ${abs(portfolio_value_dollars * cvar_99/100):.2f} avg loss in worst scenarios")
+
+pd.DataFrame({
+    'Final value': portfolio_returns,
+    'Pct Return': portfolio_percentage_returns,
+}).to_csv("data/monte_carlo_results.csv", index=False)
+
+pd.DataFrame({
+    'Metric': ['VaR 95%', 'VaR 99%', 'CVaR 95%', 'CVaR 99%', 'Mean Return', 'Worst Case', 'Best Case'],
+    'Value': [var_95, var_99, cvar_95, cvar_99,
+              np.mean(portfolio_percentage_returns),
+              np.min(portfolio_percentage_returns),
+              np.max(portfolio_percentage_returns)]
+}).to_csv("data/var_summary.csv", index=False)
+
+print("Exported: monte_carlo_results, var_summary")
