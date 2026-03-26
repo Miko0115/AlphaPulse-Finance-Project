@@ -1,12 +1,5 @@
 # AlphaPulse — Methodology Document
 
-## Project Overview
-
-**Project:** Portfolio Risk & Volatility Monitor
-**Author:** Param Chaudhary
-**Date:** March 2026
-**Data Period:** January 2, 2015 – December 31, 2024 (10 years, 2,516 trading days)
-
 ### Objective
 
 Build a quantitative risk analysis pipeline that measures, forecasts, and visualizes portfolio risk using Monte Carlo simulation, GARCH volatility modeling, and K-Means regime detection — then present the results in an interactive Power BI dashboard for stakeholder decision-making.
