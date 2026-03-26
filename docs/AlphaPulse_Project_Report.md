@@ -1,4 +1,4 @@
-﻿**AlphaPulse Project: Portfolio Risk & Volatility Monitor Report**
+﻿**AlphaPulse Project:** Portfolio Risk & Volatility Monitor Report
 
 **Author:** Param Chaudhary
 
@@ -17,7 +17,7 @@ AlphaPulse is a quantitative portfolio risk monitoring system built for an asset
 - The portfolio delivered a **17.93% annualized return** with **20.13% volatility**, producing a Sharpe ratio of **0.6795**. Diversification reduced portfolio volatility by 29.3% versus the average individual stock (28.5% → 20.1%), driven by genuinely low cross-sector correlations — the XOM–AMZN pair at 0.18 represents a near-zero co-movement between energy and e-commerce.
 - Three Monte Carlo variants — Baseline, GARCH-enhanced, and Regime-aware — provide a spectrum of risk estimates. Value at Risk at 95% confidence ranges from **-14.20%** (baseline) to **-6.28%** (regime-aware in calm markets), demonstrating that risk is state-dependent, not a fixed property of the portfolio.
 - K-Means regime detection (K=3) correctly identified all 7 major market events in the dataset, including 71 consecutive crisis days during COVID (March–May 2020) and the extended stress of the 2022 rate hiking cycle.
-- A counterintuitive finding: the **Stress regime (-68.1% annualized return)** is more damaging than the **Crisis regime (+48.5%)**. Crisis captures acute shocks that trigger V-shaped recoveries and central bank intervention, while Stress captures slow-grinding selloffs with no catalyst for a bounce.
+- A counterintuitive finding: the **Stress regime (-681.3% annualized return)** is more damaging than the **Crisis regime (+485.2%)**. Crisis captures acute shocks that trigger V-shaped recoveries and central bank intervention, while Stress captures slow-grinding selloffs with no catalyst for a bounce.
 
 The system is delivered as a 3-page interactive Power BI dashboard with What-If parameters (investment amount, confidence level), enabling stakeholders to explore risk scenarios without executing Python code.
 
@@ -45,7 +45,7 @@ Five large-cap, highly liquid stocks were selected from five different GICS sect
 
 ## **2.3 Data Quality**
 
-Three validation checks were applied: (1) zero missing values across all 25 columns (5 tickers × 5 OHLCV fields); (2) no daily returns exceeding ±50%, confirming that Apple’s 4:1 split (August 2020) and Amazon’s 20:1 split (June 2022) were correctly adjusted; (3) forward fill and backward fill applied as precautionary measures, though no NaNs required filling.
+Two validation checks were applied: (1) zero missing values across all 25 columns (5 tickers × 5 OHLCV fields) — no imputation was necessary; (2) no daily returns exceeding ±50%, confirming that Apple’s 4:1 split (August 2020) and Amazon’s 20:1 split (June 2022) were correctly adjusted by `auto_adjust=True`.
 
 # **3. Quantitative Analysis**
 
@@ -73,7 +73,7 @@ The XOM–AMZN pair at 0.18 represents the strongest diversification relationshi
 
 **GARCH-Enhanced MC** replaces the constant variance assumption with a GARCH(1,1) model fitted individually to each asset. Volatility is updated daily during each simulation path using the conditional variance equation σ²(t) = ω + α·r²(t-1) + β·σ²(t-1). Correlations remain static (a Constant Conditional Correlation approximation); only the diagonal volatilities are time-varying. The simulation initialises from the last observed conditional variance, making risk estimates responsive to the current market environment.
 
-**Regime-Aware MC** applies K-Means clustering (Section 3.4) to identify the current market regime, then simulates using that regime’s specific covariance matrix and mean returns. Unlike the GARCH variant, this captures regime-specific **correlations** — a critical advantage because cross-asset correlations spike during crises (the “correlation breakdown” phenomenon), precisely when diversification is needed most.
+**Regime-Aware MC** applies K-Means clustering to identify the current market regime, then simulates using that regime’s specific covariance matrix and mean returns. Unlike the GARCH variant, this captures regime-specific **correlations** — a critical advantage because cross-asset correlations spike during crises (the “correlation breakdown” phenomenon), precisely when diversification is needed most.
 
 ## **3.3 Risk Metrics**
 
@@ -112,12 +112,12 @@ An unsupervised K-Means model (K=3) classified each trading day into one of thre
 | **Regime** | **Days** | **Share** | **Avg Return (ann.)** | **Avg Rolling Vol** |
 | :--------------- | :------------- | :-------------- | :-------------------------- | :------------------------ |
 | **Calm**   | 2,061          | 83%             | +11.93%                     | 14\.87%                   |
-| **Stress** | 161            | 6%              | -68.13%                     | 28\.32%                   |
-| **Crisis** | 264            | 11%             | +48.52%                     | 30\.84%                   |
+| **Stress** | 161            | 6%              | -681.3%                     | 28\.32%                   |
+| **Crisis** | 264            | 11%             | +485.2%                     | 30\.84%                   |
 
 The model correctly identified all 7 major market events in the dataset: the 2015 China devaluation, the 2016 oil price collapse, Volmageddon (February 2018), the Q4 2018 Fed tightening selloff, the COVID-19 crash (71 consecutive crisis days, March–May 2020), the 2022 rate hiking cycle, and the SVB banking crisis (March 2023).
 
-**A counterintuitive but economically important finding:** the Crisis regime shows **positive** average returns (+48.5%) while the Stress regime shows deeply **negative** returns (-68.1%). This occurs because Crisis captures acute, dramatic shocks — the kind that trigger immediate central bank intervention (Fed rate cuts, QE), fiscal stimulus, and sharp V-shaped recoveries. The crash itself is short and the recovery is aggressive, producing a net-positive return when averaged across the full crisis period. Stress, by contrast, captures slow, grinding selloffs like Q4 2018 and the 2022 rate hiking cycle — periods where there is no single catalyst for a bounce, policy response is gradual rather than dramatic, and portfolio erosion is sustained over months. For portfolio risk management, this distinction matters profoundly: **Stress regimes are more damaging to wealth than Crisis regimes.**
+**A counterintuitive but economically important finding:** the Crisis regime shows **positive** average returns (+485.2%) while the Stress regime shows deeply **negative** returns (-681.3%). This occurs because Crisis captures acute, dramatic shocks — the kind that trigger immediate central bank intervention (Fed rate cuts, QE), fiscal stimulus, and sharp V-shaped recoveries. The crash itself is short and the recovery is aggressive, producing a net-positive return when averaged across the full crisis period. Stress, by contrast, captures slow, grinding selloffs like Q4 2018 and the 2022 rate hiking cycle — periods where there is no single catalyst for a bounce, policy response is gradual rather than dramatic, and portfolio erosion is sustained over months. For portfolio risk management, this distinction matters profoundly: **Stress regimes are more damaging to wealth than Crisis regimes.**
 
 # **4. Dashboard & Visualization**
 

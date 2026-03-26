@@ -261,7 +261,7 @@ All correlations between -1 and +1 — **PASS**
 
 ### Verdict: PASS
 
-All 30 validation checks pass. Model outputs are consistent with economic theory, real-world benchmarks, and known market events. The methodology document (Section 11) correctly identifies the key limitations.
+All 30 validation checks pass. Model outputs are consistent with economic theory, real-world benchmarks, and known market events. The methodology document correctly identifies the key limitations.
 
 ### Noted Risks
 

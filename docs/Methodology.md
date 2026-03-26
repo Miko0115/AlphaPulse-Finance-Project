@@ -14,7 +14,7 @@ Build a quantitative risk analysis pipeline that measures, forecasts, and visual
 | XOM    | ExxonMobil         | Energy                 | 20%    |
 | AMZN   | Amazon.com         | Consumer Discretionary | 20%    |
 
-**Selection rationale:** Five large-cap, highly liquid stocks from five different GICS sectors to ensure diversification. Each stock has 10+ years of trading history with no delistings, ensuring complete data coverage. Equal weighting (1/N) was chosen for simplicity and transparency — it avoids optimization bias and is a well-documented baseline in portfolio theory (DeMiguel et al., 2009).
+**Selection rationale:** Five large-cap, highly liquid stocks from five different GICS sectors to ensure diversification. Each stock has 10+ years of trading history with no delistings, ensuring complete data coverage. Equal weighting (1/N) was chosen for simplicity and transparency — it avoids optimization bias and is a well-documented baseline in portfolio theory.
 
 **Note on UNH:** UnitedHealth Group replaced Johnson & Johnson (JNJ) in the portfolio after discovering that JNJ's Kenvue consumer health spinoff in May 2023 created a structural break in the time series. Pre-spinoff and post-spinoff JNJ are fundamentally different companies, which would contaminate covariance estimates and regime detection. UNH provides clean, continuous healthcare sector exposure over the full 10-year window.
 
@@ -29,11 +29,10 @@ Build a quantitative risk analysis pipeline that measures, forecasts, and visual
 - **Adjustment:** `auto_adjust=True` — all historical prices are retroactively adjusted for stock splits and dividend distributions
 - **Date range:** Fixed at 2015-01-01 to 2025-01-01 for reproducibility
 
-### 1.2 Missing Data Handling
+### 1.2 Missing Data Check
 
-- **Method:** Forward fill (`ffill`) followed by backward fill (`bfill`)
-- **Rationale:** Forward fill is the industry standard for financial time series — "no trade" means "the price didn't change." Backward fill is applied only as a safety net for potential leading NaN values on the first row.
 - **Result:** Zero missing values detected across all 5 tickers and all 25 columns (5 tickers × 5 OHLCV fields)
+- No imputation was necessary — Yahoo Finance returned complete data for all trading days in the 2015–2024 range for these large-cap, highly liquid stocks
 
 ### 1.3 Data Validation
 
@@ -115,7 +114,7 @@ Key pairwise correlations:
 
 ### 3.5 Assumptions
 
-- Correlations are stationary over the observation period (violated during crises — addressed by regime-aware analysis in Section 7)
+- Correlations are stationary over the observation period (violated during crises — addressed by regime-aware analysis)
 - The covariance matrix is positive definite (verified by successful Cholesky decomposition)
 
 ---
@@ -145,9 +144,9 @@ Key pairwise correlations:
 ### 4.3 Assumptions
 
 - Daily log returns follow a multivariate normal distribution (simplification — real returns exhibit fat tails and skewness)
-- Returns are independent across time (no serial correlation or volatility clustering — addressed by GARCH in Section 6)
+- Returns are independent across time (no serial correlation or volatility clustering — addressed by GARCH)
 - The drift (mean return) and covariance matrix are constant over the simulation horizon
-- No regime changes during the simulation period (addressed by regime-aware MC in Section 7)
+- No regime changes during the simulation period (addressed by regime-aware MC)
 
 ---
 
@@ -244,13 +243,13 @@ GARCH MC shows tighter risk estimates because the model was conditioned on a **l
 | Regime | Days | % of Data | Annualized Return | Avg Rolling Vol | Avg |Return| |
 |--------|------|-----------|-------------------|-----------------|----------------|
 | Calm | 2,061 | 83% | +11.93% | 14.87% | 0.95% |
-| Stress | 161 | 6% | -68.13% | 28.32% | 2.95% |
-| Crisis | 264 | 11% | +48.52% | 30.84% | 2.36% |
+| Stress | 161 | 6% | -681.3% | 28.32% | 2.95% |
+| Crisis | 264 | 11% | +485.2% | 30.84% | 2.36% |
 
 ### 7.3 Regime Labeling Logic
 
 - Clusters are assigned labels based on average rolling volatility: lowest = Calm, middle = Stress, highest = Crisis
-- **Important finding:** The "Crisis" regime shows positive annualized returns (+48.52%) because it captures both sharp crashes AND sharp recoveries (e.g., the COVID V-shaped bounce had extreme volatility with positive returns). The "Stress" regime shows the most consistently negative returns (-68.13%) — these are slow-grinding selloffs like the 2022 rate hike cycle.
+- **Important finding:** The "Crisis" regime shows positive annualized returns (+485.2%) because it captures both sharp crashes AND sharp recoveries (e.g., the COVID V-shaped bounce had extreme volatility with positive returns). The "Stress" regime shows the most consistently negative returns (-681.3%) — these are slow-grinding selloffs like the 2022 rate hike cycle.
 
 ### 7.4 Validation Against Known Events
 
