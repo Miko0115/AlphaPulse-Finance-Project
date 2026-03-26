@@ -1,8 +1,4 @@
-﻿AlphaPulse — Project Report
-
-**AlphaPulse: Portfolio Risk & Volatility Monitor**
-
-Project Report
+﻿**AlphaPulse Project: Portfolio Risk & Volatility Monitor Report**
 
 **Author:** Param Chaudhary
 
@@ -140,4 +136,3 @@ The analysis is delivered through a 3-page interactive Power BI dashboard:
 3. **No regime transitions within simulations** — Each MC path assumes one regime for the full 252-day horizon.
 4. **Equal weighting** — Simple and robust, but does not optimize risk-adjusted returns.
 5. **US large-cap equities only** — No bonds, commodities, or international diversification.
-

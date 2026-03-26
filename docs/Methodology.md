@@ -6,13 +6,13 @@ Build a quantitative risk analysis pipeline that measures, forecasts, and visual
 
 ### Portfolio Composition
 
-| Ticker | Company | Sector | Weight |
-|--------|---------|--------|--------|
-| AAPL | Apple Inc. | Technology | 20% |
-| UNH | UnitedHealth Group | Healthcare | 20% |
-| JPM | JPMorgan Chase | Financials | 20% |
-| XOM | ExxonMobil | Energy | 20% |
-| AMZN | Amazon.com | Consumer Discretionary | 20% |
+| Ticker | Company            | Sector                 | Weight |
+| ------ | ------------------ | ---------------------- | ------ |
+| AAPL   | Apple Inc.         | Technology             | 20%    |
+| UNH    | UnitedHealth Group | Healthcare             | 20%    |
+| JPM    | JPMorgan Chase     | Financials             | 20%    |
+| XOM    | ExxonMobil         | Energy                 | 20%    |
+| AMZN   | Amazon.com         | Consumer Discretionary | 20%    |
 
 **Selection rationale:** Five large-cap, highly liquid stocks from five different GICS sectors to ensure diversification. Each stock has 10+ years of trading history with no delistings, ensuring complete data coverage. Equal weighting (1/N) was chosen for simplicity and transparency — it avoids optimization bias and is a well-documented baseline in portfolio theory (DeMiguel et al., 2009).
 
@@ -65,14 +65,14 @@ Build a quantitative risk analysis pipeline that measures, forecasts, and visual
 
 ### 2.2 Summary Statistics
 
-| Ticker | Annual Return | Annual Volatility | Sharpe Ratio |
-|--------|--------------|-------------------|-------------|
-| AAPL | 23.35% | 28.47% | 0.6711 |
-| UNH | 17.69% | 26.19% | 0.5131 |
-| JPM | 16.17% | 27.32% | 0.4365 |
-| XOM | 5.84% | 27.79% | 0.0573 |
-| AMZN | 26.60% | 32.66% | 0.6844 |
-| **Portfolio** | **17.93%** | **20.13%** | **0.6795** |
+| Ticker              | Annual Return    | Annual Volatility | Sharpe Ratio     |
+| ------------------- | ---------------- | ----------------- | ---------------- |
+| AAPL                | 23.35%           | 28.47%            | 0.6711           |
+| UNH                 | 17.69%           | 26.19%            | 0.5131           |
+| JPM                 | 16.17%           | 27.32%            | 0.4365           |
+| XOM                 | 5.84%            | 27.79%            | 0.0573           |
+| AMZN                | 26.60%           | 32.66%            | 0.6844           |
+| **Portfolio** | **17.93%** | **20.13%**  | **0.6795** |
 
 ### 2.3 Annualization
 
@@ -93,12 +93,12 @@ Build a quantitative risk analysis pipeline that measures, forecasts, and visual
 
 Key pairwise correlations:
 
-| Pair | Correlation | Interpretation |
-|------|-------------|---------------|
-| AAPL–AMZN | 0.557 | Highest — both tech-adjacent growth stocks |
-| JPM–XOM | 0.559 | Both cyclical/value stocks, sensitive to economic cycles |
-| XOM–AMZN | 0.182 | Lowest — best diversifier pair (energy vs tech) |
-| UNH–AMZN | 0.259 | Low — healthcare vs tech, independent drivers |
+| Pair       | Correlation | Interpretation                                           |
+| ---------- | ----------- | -------------------------------------------------------- |
+| AAPL–AMZN | 0.557       | Highest — both tech-adjacent growth stocks              |
+| JPM–XOM   | 0.559       | Both cyclical/value stocks, sensitive to economic cycles |
+| XOM–AMZN  | 0.182       | Lowest — best diversifier pair (energy vs tech)         |
+| UNH–AMZN  | 0.259       | Low — healthcare vs tech, independent drivers           |
 
 ### 3.3 Diversification Benefit
 
@@ -134,13 +134,13 @@ Key pairwise correlations:
 
 ### 4.2 Results
 
-| Metric | Value |
-|--------|-------|
-| Mean return | +21.84% |
-| Median return | +19.16% |
-| Standard deviation | 24.84% |
-| Best case | +166.43% |
-| Worst case | -41.01% |
+| Metric             | Value    |
+| ------------------ | -------- |
+| Mean return        | +21.84%  |
+| Median return      | +19.16%  |
+| Standard deviation | 24.84%   |
+| Best case          | +166.43% |
+| Worst case         | -41.01%  |
 
 ### 4.3 Assumptions
 
@@ -186,13 +186,13 @@ Key pairwise correlations:
 
 ### 6.2 Fitted Parameters
 
-| Ticker | ω (omega) | α (alpha) | β (beta) | α + β | Interpretation |
-|--------|-----------|-----------|----------|-------|---------------|
-| AAPL | 0.1437 | 0.1044 | 0.8492 | 0.954 | Balanced shock reaction and persistence |
-| UNH | 0.0866 | 0.0676 | 0.8967 | 0.964 | High persistence, low shock reaction |
-| JPM | 0.1974 | 0.1299 | 0.7911 | 0.921 | Most reactive to news |
-| XOM | 0.0174 | 0.0823 | 0.9146 | 0.997 | Near unit root — shocks almost never fade |
-| AMZN | 0.3199 | 0.2010 | 0.7445 | 0.946 | Highest shock reaction, fastest mean reversion |
+| Ticker | ω (omega) | α (alpha) | β (beta) | α + β | Interpretation                                 |
+| ------ | ---------- | ---------- | --------- | ------- | ---------------------------------------------- |
+| AAPL   | 0.1437     | 0.1044     | 0.8492    | 0.954   | Balanced shock reaction and persistence        |
+| UNH    | 0.0866     | 0.0676     | 0.8967    | 0.964   | High persistence, low shock reaction           |
+| JPM    | 0.1974     | 0.1299     | 0.7911    | 0.921   | Most reactive to news                          |
+| XOM    | 0.0174     | 0.0823     | 0.9146    | 0.997   | Near unit root — shocks almost never fade     |
+| AMZN   | 0.3199     | 0.2010     | 0.7445    | 0.946   | Highest shock reaction, fastest mean reversion |
 
 ### 6.3 Interpretation
 
@@ -208,12 +208,12 @@ Key pairwise correlations:
 
 ### 6.5 GARCH MC Results vs Baseline
 
-| Metric | Basic MC | GARCH MC |
-|--------|----------|----------|
-| Mean return | +21.84% | +21.72% |
-| VaR 95% | -14.20% | -12.97% |
-| VaR 99% | -24.27% | -23.18% |
-| CVaR 95% | -20.42% | -19.15% |
+| Metric      | Basic MC | GARCH MC |
+| ----------- | -------- | -------- |
+| Mean return | +21.84%  | +21.72%  |
+| VaR 95%     | -14.20%  | -12.97%  |
+| VaR 99%     | -24.27%  | -23.18%  |
+| CVaR 95%    | -20.42%  | -19.15%  |
 
 GARCH MC shows tighter risk estimates because the model was conditioned on a **low-volatility market state** at the end of 2024. In a high-volatility regime, GARCH would produce wider tails. This adaptiveness is precisely the value of GARCH — it reflects current conditions rather than historical averages.
 
@@ -254,27 +254,27 @@ GARCH MC shows tighter risk estimates because the model was conditioned on a **l
 
 ### 7.4 Validation Against Known Events
 
-| Known Event | Date | Detected? |
-|-------------|------|:---------:|
-| China devaluation / oil crash | Aug–Sep 2015 | Yes |
-| Worst January since 2009 | Jan 2016 | Yes |
-| Volmageddon | Feb 2018 | Yes |
-| Fed tightening selloff | Oct–Dec 2018 | Yes |
-| COVID-19 crash | Mar–May 2020 | Yes (71 consecutive crisis days) |
-| 2022 rate hiking cycle | Jan–Oct 2022 | Yes (scattered episodes) |
-| SVB banking crisis | Mar 2023 | Yes |
+| Known Event                   | Date          |            Detected?            |
+| ----------------------------- | ------------- | :------------------------------: |
+| China devaluation / oil crash | Aug–Sep 2015 |               Yes               |
+| Worst January since 2009      | Jan 2016      |               Yes               |
+| Volmageddon                   | Feb 2018      |               Yes               |
+| Fed tightening selloff        | Oct–Dec 2018 |               Yes               |
+| COVID-19 crash                | Mar–May 2020 | Yes (71 consecutive crisis days) |
+| 2022 rate hiking cycle        | Jan–Oct 2022 |     Yes (scattered episodes)     |
+| SVB banking crisis            | Mar 2023      |               Yes               |
 
 ### 7.5 Regime-Aware Monte Carlo
 
 - **Method:** Compute a separate covariance matrix for each regime. Detect the current regime using the last trading day's features. Simulate using the current regime's covariance matrix and mean returns.
 - **Current regime (Dec 31, 2024):** Calm
 
-| Metric | Basic MC | GARCH MC | Regime MC (Calm) |
-|--------|----------|----------|-----------------|
-| Mean return | +21.84% | +21.72% | +13.25% |
-| VaR 95% | -14.20% | -12.97% | -6.28% |
-| VaR 99% | -24.27% | -23.18% | -12.51% |
-| CVaR 95% | -20.42% | -19.15% | -10.14% |
+| Metric      | Basic MC | GARCH MC | Regime MC (Calm) |
+| ----------- | -------- | -------- | ---------------- |
+| Mean return | +21.84%  | +21.72%  | +13.25%          |
+| VaR 95%     | -14.20%  | -12.97%  | -6.28%           |
+| VaR 99%     | -24.27%  | -23.18%  | -12.51%          |
+| CVaR 95%    | -20.42%  | -19.15%  | -10.14%          |
 
 The Regime MC in Calm mode shows significantly lower risk because it uses only the Calm regime's covariance matrix, which has 2-4× smaller variances and lower correlations than the full-sample matrix.
 
@@ -297,11 +297,11 @@ The Regime MC in Calm mode shows significantly lower risk because it uses only t
 
 ### 8.2 Key Observations
 
-| Period | Portfolio Rolling Vol | Market Context |
-|--------|---------------------|---------------|
-| Mid-2017 (calm) | ~10-12% | Historic low VIX, S&P 500 rose every month |
-| March 2020 (COVID peak) | ~60-120% per stock | Fastest bear market in history |
-| Dec 2024 (latest) | 14-39% per stock | Mixed — UNH elevated, others calm |
+| Period                  | Portfolio Rolling Vol | Market Context                             |
+| ----------------------- | --------------------- | ------------------------------------------ |
+| Mid-2017 (calm)         | ~10-12%               | Historic low VIX, S&P 500 rose every month |
+| March 2020 (COVID peak) | ~60-120% per stock    | Fastest bear market in history             |
+| Dec 2024 (latest)       | 14-39% per stock      | Mixed — UNH elevated, others calm         |
 
 ### 8.3 Window Size Rationale
 
@@ -348,14 +348,14 @@ The Regime MC in Calm mode shows significantly lower risk because it uses only t
 
 ### 10.3 Key Visualizations
 
-| Visual | Data Source | Purpose |
-|--------|-----------|---------|
-| KPI Cards | DAX measures | At-a-glance portfolio health |
-| MC Histogram | 30,000 simulations (3 types) | Return distribution comparison |
-| Correlation Heatmap | Matrix visual with conditional formatting | Diversification quality |
-| Rolling Volatility | Line chart with event annotations | Risk evolution over time |
-| GARCH vs Rolling Vol | Dual-line comparison | Forward-looking vs backward-looking vol |
-| Regime Timeline | Color-coded scatter/line | K-Means regime classification |
+| Visual               | Data Source                               | Purpose                                 |
+| -------------------- | ----------------------------------------- | --------------------------------------- |
+| KPI Cards            | DAX measures                              | At-a-glance portfolio health            |
+| MC Histogram         | 30,000 simulations (3 types)              | Return distribution comparison          |
+| Correlation Heatmap  | Matrix visual with conditional formatting | Diversification quality                 |
+| Rolling Volatility   | Line chart with event annotations         | Risk evolution over time                |
+| GARCH vs Rolling Vol | Dual-line comparison                      | Forward-looking vs backward-looking vol |
+| Regime Timeline      | Color-coded scatter/line                  | K-Means regime classification           |
 
 ---
 
@@ -373,12 +373,11 @@ The Regime MC in Calm mode shows significantly lower risk because it uses only t
 
 ## 12. Technical Stack
 
-| Component | Technology |
-|-----------|-----------|
-| Data fetching | Python, yfinance |
-| Analysis | NumPy, pandas |
-| GARCH modeling | arch (Python) |
+| Component        | Technology            |
+| ---------------- | --------------------- |
+| Data fetching    | Python, yfinance      |
+| Analysis         | NumPy, pandas         |
+| GARCH modeling   | arch (Python)         |
 | Regime detection | scikit-learn (KMeans) |
-| Visualization | Power BI Desktop |
-| Version control | Git |
-
+| Visualization    | Power BI Desktop      |
+| Version control  | Git                   |
