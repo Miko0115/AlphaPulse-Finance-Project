@@ -6,10 +6,12 @@ validates for anomalies, and exports a cleaned CSV.
 
 import pandas as pd
 import yfinance as yf
+import os
 
 tickers = ["AAPL", "UNH", "JPM", "XOM", "AMZN"]
 start_date = "2015-01-01"                              
 end_date = "2025-01-01"                               
+os.makedirs("data", exist_ok=True)
 output_path = "data/stock_data.csv"
 
 # Step 1: Fetch OHLCV data from Yahoo Finance
